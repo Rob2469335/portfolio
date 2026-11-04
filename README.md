@@ -23,7 +23,7 @@ The portfolio emphasizes practical generative AI, prompt engineering, agentic sy
 ## 🔍 Independent Credential Verification
 
 Employers and recruiters do not have to rely on résumé claims. Every credential listed in this portfolio includes:
-1. **Direct Verification URL**: Links directly to Coursera's official cryptographic certificate verification page (`https://www.coursera.org/account/accomplishments/verify/<ID>` or `/specialization/certificate/<ID>`).
+1. **Direct Verification URL**: Links directly to Coursera's official public certificate verification page (`https://www.coursera.org/account/accomplishments/verify/<ID>` or `/specialization/certificate/<ID>`).
 2. **Public Share URL**: Official Coursera share link where available.
 3. **Verified Recipient Name**: Confirms credential awarded to **Robert locust**.
 4. **Issuing Institution & Completion Date**: Authenticated by Vanderbilt University, Google, IBM, NVIDIA, Meta, AWS, and University of Colorado System.
