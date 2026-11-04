@@ -36,14 +36,25 @@ REQUIRED_FIELDS = {
 }
 VALID_STATUSES = {"VERIFIED", "ACCOUNT-SCOPED"}
 VALID_TYPES = {"Specialization", "Professional Certificate", "Course"}
-COURSE_URL = re.compile(r"^https://(www\.)?coursera\.org/account/accomplishments/")
+# Accepted public verification URL forms:
+#   https://(www.)coursera.org/account/accomplishments/verify/<ID>
+#   https://(www.)coursera.org/account/accomplishments/specialization/<ID>
+#   https://coursera.org/verify/specialization/<ID>
+# The legacy ".../specialization/certificate/<ID>" form is rejected: its backing
+# API returns 404 and renders nothing to a logged-out visitor.
+VERIFICATION_URL = re.compile(
+    r"^https://(www\.)?coursera\.org/("
+    r"account/accomplishments/(verify|specialization)/[A-Za-z0-9]+"
+    r"|verify/specialization/[A-Za-z0-9]+"
+    r")$"
+)
 
 # Expected baseline at this revision. Update deliberately (with --allow-change)
 # whenever a credential is legitimately added or removed.
 BASELINE = {
     "total": 42,
-    "publicly_verified": 36,
-    "account_scoped": 6,
+    "publicly_verified": 42,
+    "account_scoped": 0,
     "specializations_and_professional_certificates": 6,
     "courses": 36,
     "standalone_courses": 12,
@@ -148,8 +159,8 @@ def validate(data: list[dict]) -> bool:
             p.add(f"{r.get('id')}: invalid type {r.get('type')!r}")
         if not str(r.get("direct_url", "")).startswith("https://"):
             p.add(f"{r.get('id')}: direct_url is not https")
-        if not COURSE_URL.match(str(r.get("direct_url", ""))):
-            p.add(f"{r.get('id')}: direct_url is not a Coursera accomplishments URL")
+        if not VERIFICATION_URL.match(str(r.get("direct_url", ""))):
+            p.add(f"{r.get('id')}: direct_url is not a supported Coursera verification URL")
     ok &= p.report(f"canonical dataset structure ({len(data)} records)")
 
     m = compute(data)

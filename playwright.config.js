@@ -29,7 +29,7 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'desktop',
-      testMatch: /(desktop|security)\.spec\.js/,
+      testMatch: /(desktop|security|coursera-links)\.spec\.js/,
       use: { ...devices['Desktop Chrome'], channel: 'chrome', viewport: { width: 1280, height: 900 } },
     },
     {

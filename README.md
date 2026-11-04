@@ -24,11 +24,11 @@ The portfolio emphasizes practical generative AI, prompt engineering, agentic sy
 
 Employers and recruiters do not have to rely on résumé claims. Every credential in this portfolio links to Coursera's own certificate page:
 
-1. **Direct Verification URL** — `https://www.coursera.org/account/accomplishments/verify/<ID>` for courses, or `.../specialization/certificate/<ID>` for specializations.
+1. **Direct Verification URL** — `https://www.coursera.org/account/accomplishments/verify/<ID>` for courses, or `https://coursera.org/verify/specialization/<ID>` for specializations.
 2. **Public Share URL** — Coursera share link where one exists.
-3. **Recipient and title** — for **36 of the 42** credentials, the linked page renders the recipient name ("Completed by Robert locust") and the credential title **without requiring a sign-in**. These were checked on 2026-11-04 against Coursera's live pages.
-4. **Six specialization / professional certificates** — their certificate pages are **account-scoped**: they return HTTP 200 but do not display the recipient or title to a logged-out visitor. They are recorded as **`ACCOUNT-SCOPED`**, not as publicly verified.
-5. **Institutional partner** — confirmed on each public page that rendered (Vanderbilt University, Google, IBM, NVIDIA, Meta, AWS, University of Colorado System).
+3. **Recipient and title** — on **all 42** credentials the linked page renders the recipient name ("Completed by Robert locust") and the credential title **without requiring a sign-in**, when opened in a JavaScript-capable browser. Re-checked 2026-11-04.
+4. **Specialization certificates** — these pages are client-rendered, so a plain HTTP fetch shows an empty shell even though a browser shows the certificate. Verification must be done in a browser, not with `curl`. The older `/account/accomplishments/specialization/certificate/<ID>` form is broken (its backing API returns 404) and is no longer used.
+5. **Institutional partner** — confirmed on each public page (Vanderbilt University, Google, IBM, NVIDIA, Meta, AWS, University of Colorado System).
 
 **Verification is a page-level check, not a cryptographic one.** No digital-signature or blockchain validation is claimed or performed.
 
@@ -37,8 +37,8 @@ Employers and recruiters do not have to rely on résumé claims. Every credentia
 ## 📊 Credential Summary & Statistics
 
 - **Total Credentials:** 42
-- **Publicly Verifiable (recipient + title visible without sign-in):** 36
-- **Account-Scoped (Coursera sign-in required to view):** 6 — the specializations / professional certificate below
+- **Publicly Verifiable (recipient + title visible without sign-in):** 42
+- **Account-Scoped (sign-in required to view):** 0
 - **Specializations & Professional Certificates:** 6
   - Generative AI Strategic Leader *(Vanderbilt University)*
   - Google AI Essentials *(Google)*

@@ -21,7 +21,7 @@ function statusBadge(c) {
   const isPublic = c.status === 'VERIFIED';
   const label = isPublic ? 'PUBLICLY VERIFIED' : 'ACCOUNT-SCOPED';
   const desc = isPublic
-    ? 'Recipient and credential title are visible on the public Coursera verification page.'
+    ? 'Recipient and credential title are visible on the public Coursera verification page without signing in.'
     : 'Coursera page requires an account sign-in to confirm the recipient and credential title.';
   const icon = isPublic
     ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'

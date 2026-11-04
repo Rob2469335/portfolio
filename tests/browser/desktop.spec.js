@@ -1,7 +1,7 @@
 // Desktop browser tests against the real shipped application.
 const { test, expect } = require('@playwright/test');
 
-const EXPECTED = { total: 42, publiclyVerified: 36, accountScoped: 6, courses: 36 };
+const EXPECTED = { total: 42, publiclyVerified: 42, accountScoped: 0, courses: 36 };
 
 test.describe('desktop portfolio', () => {
   let consoleErrors;
@@ -32,21 +32,18 @@ test.describe('desktop portfolio', () => {
     await expect(page.locator('#resultsCount')).toHaveText('Showing 42 of 42 credentials');
   });
 
-  test('badges distinguish public and account-scoped credentials', async ({ page }) => {
+  test('every credential card carries a public-verification badge', async ({ page }) => {
     await expect(page.locator('.credential-card .badge-verified')).toHaveCount(EXPECTED.publiclyVerified);
     await expect(page.locator('.credential-card .badge-scoped')).toHaveCount(EXPECTED.accountScoped);
     // Text labels exist (not colour alone) and are accessible.
     await expect(page.locator('.credential-card .badge-verified').first()).toContainText('PUBLICLY VERIFIED');
-    await expect(page.locator('.credential-card .badge-scoped').first()).toContainText('ACCOUNT-SCOPED');
-    await expect(page.locator('.credential-card .badge-scoped .sr-only').first()).toContainText('sign-in');
-    const title = await page.locator('.credential-card .badge-scoped').first().getAttribute('title');
-    expect(title).toContain('sign-in');
+    await expect(page.locator('.credential-card .badge-verified .sr-only').first()).toContainText('without signing in');
+    const title = await page.locator('.credential-card .badge-verified').first().getAttribute('title');
+    expect(title).toContain('public');
   });
 
-  test('account-scoped cards carry an explanatory note', async ({ page }) => {
-    const notes = page.locator('.status-note');
-    await expect(notes).toHaveCount(EXPECTED.accountScoped);
-    await expect(notes.first()).toContainText('sign-in');
+  test('no card carries an account-scoped note', async ({ page }) => {
+    await expect(page.locator('.status-note')).toHaveCount(EXPECTED.accountScoped);
   });
 
   test('search filters the list and updates the counter', async ({ page }) => {
@@ -89,11 +86,11 @@ test.describe('desktop portfolio', () => {
     await expect(page.locator('.credential-card')).toHaveCount(1);
   });
 
-  test('verification filter separates the two statuses', async ({ page }) => {
+  test('verification filter reflects the all-public dataset', async ({ page }) => {
+    // No credential is account-scoped, so this filter yields the empty state.
     await page.selectOption('#verificationFilter', 'scoped');
     await expect(page.locator('.credential-card')).toHaveCount(EXPECTED.accountScoped);
-    await expect(page.locator('.credential-card .badge-scoped')).toHaveCount(EXPECTED.accountScoped);
-    await expect(page.locator('.credential-card .badge-verified')).toHaveCount(0);
+    await expect(page.locator('.empty-state')).toBeVisible();
 
     await page.selectOption('#verificationFilter', 'public');
     await expect(page.locator('.credential-card')).toHaveCount(EXPECTED.publiclyVerified);

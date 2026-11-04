@@ -24,7 +24,7 @@ test.describe('mobile portfolio', () => {
     expect(box.width).toBeGreaterThan(240);
     await expect(card.locator('.credential-title')).toBeVisible();
     await expect(page.locator('.badge-verified').first()).toBeVisible();
-    await expect(page.locator('.badge-scoped').first()).toBeVisible();
+    await expect(page.locator('.badge-scoped')).toHaveCount(0);
     await expect(page.locator('#summaryTotal')).toBeVisible();
   });
 
@@ -40,7 +40,9 @@ test.describe('mobile portfolio', () => {
 
     await page.selectOption('#institutionFilter', '');
     await page.selectOption('#verificationFilter', 'scoped');
-    await expect(page.locator('.credential-card')).toHaveCount(6);
+    await expect(page.locator('.empty-state')).toBeVisible();
+    await page.selectOption('#verificationFilter', 'public');
+    await expect(page.locator('.credential-card')).toHaveCount(42);
   });
 
   test('accordions work on touch', async ({ page }) => {
