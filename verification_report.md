@@ -13,12 +13,15 @@
 |---|---|---|
 | **Target Credential Count** | 43 | Expected count specified in project brief |
 | **Total Distinct Credentials Located** | 42 | 6 Specializations / Professional Certificates + 36 Course Credentials |
-| **Independently Verified** | 42 (100%) | Every direct certificate verification page confirmed live with recipient verification |
-| **Account Confirmed** | 0 | All credentials elevated to full VERIFIED status |
-| **Unresolved / Unverified** | 0 | None |
-| **Link Failures** | 0 | All 42 verification endpoints active (HTTP 200) |
+| **Publicly Verifiable (recipient + title visible to a logged-out visitor)** | **36** | Checked 2026-11-04: page returns 200 **and** renders "Completed by Robert locust" with the matching credential title |
+| **Account-Scoped (sign-in required)** | **6** | Specialization / professional-certificate pages return 200 but render no recipient or title to a logged-out visitor |
+| **Claimed as publicly verified** | **0** | Deliberately conservative: no credential is marked publicly verified unless the page displayed the recipient |
+| **Unresolved / Unverified** | 0 | All 42 records resolve to a Coursera page; classification is by visibility, not by existence |
+| **Link Failures** | 0 | All 42 URLs answered HTTP 200 on 2026-11-04 |
 | **Duplicate Credentials Deduplicated** | 3 | Course overlap across multiple specializations deduplicated |
 | **Discrepancy (43 expected vs 42 found)** | -1 | Explained below (§2) — strict deduplication prevents phantom credentials |
+
+> **Correction (2026-11-04).** An earlier revision of this table stated "Independently Verified 42 (100%) — every direct certificate verification page confirmed live **with recipient verification**", while also recording "Account Confirmed: 0". Those two statements contradicted each other and the second did not support the first. The verification was re-run against all 42 URLs on 2026-11-04; the result is 36 publicly verifiable and 6 account-scoped. No claim of 100% is made.
 
 ---
 
@@ -45,12 +48,16 @@ The project brief targeted 43 credentials, with the explicit standing instructio
 
 Every single credential in this portfolio was independently tested via direct HTTPS requests to Coursera's official verification endpoints (`https://coursera.org/verify/` and `https://www.coursera.org/account/accomplishments/verify/` / `https://www.coursera.org/account/accomplishments/specialization/certificate/`).
 
-### Verification Criteria:
+### Verification Criteria (as applied)
 1. **HTTP Status:** Endpoint returns `200 OK`.
 2. **Public Accessibility:** Opens without requiring the visitor or recruiter to log into any account.
-3. **Recipient Identification:** The page confirms the credential was earned by **Robert locust** (or **Robert Locust**).
-4. **Institutional Authority:** Identifies the issuing university or enterprise partner (Vanderbilt University, Google, IBM, NVIDIA, Meta, AWS, University of Colorado System).
-5. **Exact Match:** Credential title, completion date, and verification code strictly match the inventory record.
+3. **Recipient Identification:** The rendered page contains **"Completed by Robert locust"**.
+4. **Title Match:** The rendered page contains the credential title recorded in the dataset.
+5. **Institutional Authority:** The page names the issuing partner (Vanderbilt University, Google, IBM, NVIDIA, Meta, AWS, University of Colorado System).
+
+A credential is marked **VERIFIED (public)** only when criteria 1–4 all hold. It is marked **ACCOUNT-SCOPED** when the URL responds but criteria 2–4 cannot be satisfied without sign-in.
+
+> **Limitation.** This is a **page-level** check performed on 2026-11-04. It is not a cryptographic verification, and it does not prove the credentials remain valid indefinitely — Coursera controls those pages and could change or withdraw them.
 
 ---
 
@@ -58,12 +65,12 @@ Every single credential in this portfolio was independently tested via direct HT
 
 | # | Credential Title | Issuing Institution | Credential Type | Credential ID | Completion Date | Verification Status | Direct Verification Link |
 |---|---|---|---|---|---|---|---|
-| 1 | Generative AI Strategic Leader Specialization | Vanderbilt University | Specialization | `CT190TJLYPT7` | Feb 3, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/CT190TJLYPT7) |
-| 2 | Google AI Essentials Specialization | Google | Specialization | `DA024S7Y1GKH` | Feb 10, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/DA024S7Y1GKH) |
-| 3 | Google IT Support Professional Certificate | Google | Professional Certificate | `NC3UJ0LDPVND` | Feb 8, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/NC3UJ0LDPVND) |
-| 4 | Organizational Strategy with Generative AI & AI Agents Specialization | Vanderbilt University | Specialization | `46TOQXSQP79M` | Jan 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/46TOQXSQP79M) |
-| 5 | Google Prompting Essentials Specialization | Google | Specialization | `VC6X0HJ0ZKVP` | Jan 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/VC6X0HJ0ZKVP) |
-| 6 | Generative AI for Educators & Teachers Specialization | Vanderbilt University | Specialization | `Y54CWPZ5JJ4Q` | Jan 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/Y54CWPZ5JJ4Q) |
+| 1 | Generative AI Strategic Leader Specialization | Vanderbilt University | Specialization | `CT190TJLYPT7` | Feb 3, 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/CT190TJLYPT7) |
+| 2 | Google AI Essentials Specialization | Google | Specialization | `DA024S7Y1GKH` | Feb 10, 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/DA024S7Y1GKH) |
+| 3 | Google IT Support Professional Certificate | Google | Professional Certificate | `NC3UJ0LDPVND` | Feb 8, 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/NC3UJ0LDPVND) |
+| 4 | Organizational Strategy with Generative AI & AI Agents Specialization | Vanderbilt University | Specialization | `46TOQXSQP79M` | Jan 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/46TOQXSQP79M) |
+| 5 | Google Prompting Essentials Specialization | Google | Specialization | `VC6X0HJ0ZKVP` | Jan 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/VC6X0HJ0ZKVP) |
+| 6 | Generative AI for Educators & Teachers Specialization | Vanderbilt University | Specialization | `Y54CWPZ5JJ4Q` | Jan 2026 | **ACCOUNT-SCOPED** | [Verify Link](https://www.coursera.org/account/accomplishments/specialization/certificate/Y54CWPZ5JJ4Q) |
 | 7 | Vibe Coding Fundamentals | University of Colorado System | Course | `OUQE6VJ2V2CJ` | Mar 5, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/verify/OUQE6VJ2V2CJ) |
 | 8 | Introduction to Networking | NVIDIA | Course | `JX20B2YS8BZ3` | Feb 5, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/verify/JX20B2YS8BZ3) |
 | 9 | Introduction to Data Analytics | Meta | Course | `B2X2YFSXDROO` | Feb 2, 2026 | **VERIFIED** | [Verify Link](https://www.coursera.org/account/accomplishments/verify/B2X2YFSXDROO) |
@@ -106,14 +113,14 @@ Every single credential in this portfolio was independently tested via direct HT
 ## 5. Subject Category Distribution
 
 - **Generative AI and Large Language Models:** 9 credentials
-- **Prompt Engineering and AI Applications:** 6 credentials
+- **Information Technology and Technical Support:** 7 credentials
+- **Prompt Engineering and AI Applications:** 7 credentials
+- **Data Analytics and Business Intelligence:** 6 credentials
 - **AI Strategy and Organizational Leadership:** 4 credentials
 - **AI Agents and Agentic Systems:** 3 credentials
 - **AI Automation and Productivity:** 3 credentials
-- **Data Analytics and Business Intelligence:** 6 credentials
-- **Information Technology and Technical Support:** 8 credentials
-- **Cloud Computing and Infrastructure:** 1 credential
 - **Responsible AI and Related Topics:** 2 credentials
+- **Cloud Computing and Infrastructure:** 1 credential
 
 **Total Credentials in Portfolio:** 42
 
@@ -121,4 +128,8 @@ Every single credential in this portfolio was independently tested via direct HT
 
 ## 6. Audit Conclusion
 
-All 42 credentials have been empirically validated against Coursera's production verification services. Each credential correctly names Robert Locust, confirms the verified completion status, links to the exact certificate issuing page, and aligns with the professional target of Junior AI Engineer, AI Automation Specialist, and AI Agent Developer.
+All 42 records resolve to a live Coursera certificate URL. **36** of them render the recipient and credential title on a public page and are recorded as **VERIFIED (public)**. The **6** specialization / professional-certificate URLs are **account-scoped**: they answer HTTP 200 but do not expose the recipient without a Coursera sign-in, so they are recorded as **ACCOUNT-SCOPED** rather than verified.
+
+These credentials evidence completed training. They are not a claim of professional employment experience, and no cryptographic verification is performed or implied.
+
+Two data corrections were applied on 2026-11-04: the category totals in section 5 were reconciled to the JSON/CSV dataset (IT Support 7, Prompt Engineering 7 - previously stated as 8 and 6), and one specialization share link (CT190TJLYPT7) was removed because it redirected to an unrelated course certificate.

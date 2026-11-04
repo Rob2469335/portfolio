@@ -11,8 +11,7 @@ const credentialsData = [
     "date": "February 3, 2026",
     "category": "AI Strategy and Organizational Leadership",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/CT190TJLYPT7",
-    "share_url": "https://coursera.org/share/5e8b71d5dae3e5b3123ef736bc25cbda",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Generative AI Deep Research: Strategic AI Edge for Leaders", "id": "C1OY5VKS1F0D", "url": "https://coursera.org/verify/C1OY5VKS1F0D"},
       {"title": "Prompt Engineering for ChatGPT", "id": "I5E6CQWH84N5", "url": "https://coursera.org/verify/I5E6CQWH84N5"},
@@ -30,7 +29,7 @@ const credentialsData = [
     "category": "Generative AI and Large Language Models",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/DA024S7Y1GKH",
     "share_url": "https://coursera.org/share/2ab55e432c7f467c2e6d88c6ba5ede25",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Introduction to AI", "id": "16X9SJ5DCVMI", "url": "https://coursera.org/verify/16X9SJ5DCVMI"},
       {"title": "Maximize Productivity With AI Tools", "id": "VBZ89ZYHFTJY", "url": "https://coursera.org/verify/VBZ89ZYHFTJY"},
@@ -49,7 +48,7 @@ const credentialsData = [
     "category": "Information Technology and Technical Support",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/NC3UJ0LDPVND",
     "share_url": "",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Technical Support Fundamentals", "id": "1DAZO0613LCX", "url": "https://coursera.org/verify/1DAZO0613LCX"},
       {"title": "The Bits and Bytes of Computer Networking", "id": "MD4QIT2NZ0FW", "url": "https://coursera.org/verify/MD4QIT2NZ0FW"},
@@ -69,7 +68,7 @@ const credentialsData = [
     "category": "AI Strategy and Organizational Leadership",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/46TOQXSQP79M",
     "share_url": "",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Generative AI & AI Agent Organizational Strategy for Leaders", "id": "U0NWVTL5GEBO", "url": "https://coursera.org/verify/U0NWVTL5GEBO"},
       {"title": "Agentic AI and AI Agents: A Primer for Leaders", "id": "97SZ3BLWQE6M", "url": "https://coursera.org/verify/97SZ3BLWQE6M"},
@@ -87,7 +86,7 @@ const credentialsData = [
     "category": "Prompt Engineering and AI Applications",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/VC6X0HJ0ZKVP",
     "share_url": "",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Start Writing Prompts like a Pro", "id": "H18LC18NHGSU", "url": "https://coursera.org/verify/H18LC18NHGSU"},
       {"title": "Design Prompts for Everyday Work Tasks", "id": "P81DQ55BZPIE", "url": "https://coursera.org/verify/P81DQ55BZPIE"},
@@ -105,7 +104,7 @@ const credentialsData = [
     "category": "Generative AI and Large Language Models",
     "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/Y54CWPZ5JJ4Q",
     "share_url": "",
-    "status": "VERIFIED",
+    "status": "ACCOUNT-SCOPED",
     "component_courses": [
       {"title": "Generative AI Primer", "id": "MJ18SQN0FE2H", "url": "https://coursera.org/verify/MJ18SQN0FE2H"},
       {"title": "Innovative Teaching with ChatGPT", "id": "VEYQVWMDW9US", "url": "https://coursera.org/verify/VEYQVWMDW9US"},
@@ -605,15 +604,15 @@ function renderCards(items) {
     const institutionSlug = c.institution.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     return `
-      <article class="credential-card ${isSpec ? 'card-specialization' : 'card-course'}" data-id="${c.id}">
+      <article class="credential-card ${isSpec ? 'card-specialization' : 'card-course'}" data-id="${escapeHtml(c.id)}">
         <div class="card-header">
           <div class="badges-row">
-            <span class="badge badge-type badge-${c.type.toLowerCase().replace(/\s+/g, '-')}">${c.type}</span>
+            <span class="badge badge-type badge-${escapeHtml(c.type.toLowerCase().replace(/\s+/g, '-'))}">${escapeHtml(c.type)}</span>
             <span class="badge badge-verified">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              VERIFIED
+              COURSERA ISSUED
             </span>
-            <span class="credential-seq">#${c.number}</span>
+            <span class="credential-seq">#${escapeHtml(String(c.number))}</span>
           </div>
           <h3 class="credential-title">${escapeHtml(c.title)}</h3>
           <div class="credential-meta">
@@ -635,8 +634,8 @@ function renderCards(items) {
           
           <div class="credential-id-box">
             <span class="id-label">Credential ID:</span>
-            <code class="id-code">${c.id}</code>
-            <button class="btn-copy-id" onclick="copyToClipboard('${c.id}', this)" title="Copy ID">
+            <code class="id-code">${escapeHtml(c.id)}</code>
+            <button class="btn-copy-id" data-copy-id="${escapeHtml(c.id)}" title="Copy ID">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             </button>
           </div>
@@ -658,8 +657,8 @@ function renderCards(items) {
                   ${c.component_courses.map(cc => `
                     <li>
                       <span class="comp-title">${escapeHtml(cc.title)}</span>
-                      <a href="${cc.url}" target="_blank" rel="noopener noreferrer" class="comp-verify-link">
-                        Verify [${cc.id}] ↗
+                      <a href="${safeUrl(cc.url)}" target="_blank" rel="noopener noreferrer" class="comp-verify-link">
+                        Verify [${escapeHtml(cc.id)}] ↗
                       </a>
                     </li>
                   `).join('')}
@@ -670,12 +669,12 @@ function renderCards(items) {
         </div>
 
         <div class="card-footer">
-          <a href="${c.direct_url}" target="_blank" rel="noopener noreferrer" class="btn btn-verify">
+          <a href="${safeUrl(c.direct_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-verify">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            VIEW VERIFIED CERTIFICATE
+            VIEW ON COURSERA
           </a>
           ${c.share_url ? `
-            <a href="${c.share_url}" target="_blank" rel="noopener noreferrer" class="btn btn-share" title="Public Coursera Share Link">
+            <a href="${safeUrl(c.share_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-share" title="Public Coursera Share Link">
               Share Link ↗
             </a>
           ` : ''}
@@ -753,12 +752,33 @@ function escapeHtml(str) {
             .replace(/'/g, '&#039;');
 }
 
+// Only allow https links to Coursera hosts into href attributes.
+function safeUrl(url) {
+  if (!url) return '#';
+  try {
+    const parsed = new URL(url, window.location.href);
+    const allowedHosts = ['coursera.org', 'www.coursera.org'];
+    if (parsed.protocol === 'https:' && allowedHosts.indexOf(parsed.hostname) !== -1) {
+      return escapeHtml(parsed.href);
+    }
+  } catch (e) {
+    // fall through to the inert placeholder
+  }
+  return '#';
+}
+
 // Event Listeners
 searchInput.addEventListener('input', filterCredentials);
 institutionFilter.addEventListener('change', filterCredentials);
 categoryFilter.addEventListener('change', filterCredentials);
 typeFilter.addEventListener('change', filterCredentials);
 resetBtn.addEventListener('click', resetFilters);
+// Delegated handler for the per-card "Copy ID" button (no inline JS in markup).
+cardsContainer.addEventListener('click', function (event) {
+  const btn = event.target.closest('[data-copy-id]');
+  if (!btn) return;
+  copyToClipboard(btn.getAttribute('data-copy-id'), btn);
+});
 
 // Quick Category Filter Buttons
 document.querySelectorAll('.cat-quick-btn').forEach(btn => {
