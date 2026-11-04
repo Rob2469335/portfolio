@@ -55,31 +55,85 @@ Employers and recruiters do not have to rely on résumé claims. Every credentia
 ## 📂 Repository Contents
 
 ```text
-├── index.html                # Responsive web portfolio interface
-├── styles.css                # Clean, recruiter-friendly modern CSS design
-├── app.js                    # Client-side search, filtering, modal logic; embeds the dataset
-├── credentials_master.json   # Complete machine-readable master database (JSON, 42 records)
-├── credentials_master.csv    # Complete master database (CSV, 42 rows)
-├── verification_report.md    # Verification method, per-credential status, and limitations
-├── README.md                 # Project documentation and deployment record
+├── index.html                     # Page structure and static copy
+├── styles.css                     # Responsive design
+├── app.js                         # Search, filters, accordions, copy-ID (no embedded data)
+├── credentials_master.json        # CANONICAL dataset (42 records) — the single source of truth
+├── credentials_master.csv         # Generated from the JSON (do not edit by hand)
+├── verification_report.md         # Verification method, per-credential status, limitations
+├── tools/portfolio_data.py        # Validate the dataset / regenerate the CSV
+├── tests/browser/                 # Playwright tests (desktop, mobile, security)
+├── playwright.config.js           # Browser-test configuration
+├── package.json                   # Dev-only scripts (the site itself has no dependencies)
+├── .github/workflows/validate.yml # CI: dataset validation + app.js syntax check
+├── README.md                      # This file
 └── .gitignore
 ```
 
 ---
 
+## 🧭 Data model — one canonical source
+
+**`credentials_master.json` is authoritative.** Nothing else may hold credential data.
+
+| File | Status |
+|---|---|
+| `credentials_master.json` | **Canonical.** Edit this one. |
+| `credentials_master.csv` | **Generated** — `python tools/portfolio_data.py --write` |
+| `app.js` | Contains **no credential data**; it fetches the JSON at runtime. |
+
+The validator enforces this: it fails if `app.js` ever regains an embedded dataset, if the CSV drifts from the JSON, or if the record counts change without the recorded baseline being updated.
+
+### Updating credentials
+
+```bash
+# 1. edit credentials_master.json
+# 2. regenerate the CSV from it
+python tools/portfolio_data.py --write
+# 3. validate
+python tools/portfolio_data.py
+```
+
+When a credential is legitimately added or removed, the validator reports the new counts and fails against the recorded baseline. Update `BASELINE` in `tools/portfolio_data.py` in the same commit, so the change is explicit in review:
+
+```bash
+python tools/portfolio_data.py --allow-change
+```
+
+### What the validator checks
+
+- exactly the expected number of records (baseline-compared, not hard-coded silently),
+- unique credential IDs, required fields, valid `VERIFIED` / `ACCOUNT-SCOPED` statuses,
+- every `direct_url` is an `https://` Coursera `account/accomplishments` URL,
+- status counts sum to the total; category totals sum to the total,
+- component-course IDs exist as course records (no phantom components, no double counting),
+- CSV parity with JSON,
+- `app.js` holds no credential data.
+
+**Continuous integration:** `.github/workflows/validate.yml` runs the validator plus `node --check app.js` on every push and pull request, and fails if a derived file is stale.
+
+---
+
 ## 🚀 How to Run the Portfolio Locally
 
-The portfolio is built as a zero-dependency, ultra-fast static website.
+The site itself is dependency-free, but it **loads `credentials_master.json` at runtime**, so it must be served over HTTP (opening `index.html` from the filesystem is blocked by browser CORS rules for local files).
 
-### Option 1: Direct File Open
-Simply double-click `index.html` or open it in any modern browser (Chrome, Edge, Firefox, Safari).
-
-### Option 2: Python HTTP Server
-Run from the project folder:
 ```bash
 python -m http.server 8000
+# then open http://localhost:8000
 ```
-Then navigate to: `http://localhost:8000`
+
+### Testing
+
+```bash
+npm install                 # dev-only: installs @playwright/test
+npx playwright test         # desktop, mobile and security suites (uses your installed Chrome)
+
+npx playwright test --project=desktop
+npx playwright test --project=mobile
+```
+
+The Playwright config reuses the locally installed Google Chrome (`channel: 'chrome'`), so no browser download is needed.
 
 ---
 
@@ -99,29 +153,12 @@ The portfolio is **already published** — no additional repository or deploymen
 > **Do not create a second repository.** `Rob2469335/credentials-portfolio` does not exist and was only an early placeholder name; all work lives in `Rob2469335/portfolio`.
 
 ### Updating the published site
+
 ```bash
+python tools/portfolio_data.py          # validate first
 git add .
 git commit -m "DOCS: <what changed>"
 git push origin main
 ```
-GitHub Pages rebuilds automatically; the live site reflects the new commit within roughly one minute.
 
-### Project file structure
-```text
-portfolio/
-├── index.html                # Page structure and static copy
-├── styles.css                # Responsive design
-├── app.js                    # Search, filters, accordions, copy-ID; embeds the dataset
-├── credentials_master.json   # Machine-readable dataset (42 records)
-├── credentials_master.csv    # Same dataset, tabular
-├── verification_report.md    # Verification method, per-credential status, limitations
-├── README.md                 # This file
-└── .gitignore
-```
-
-### Run locally
-```bash
-python -m http.server 8000
-# then open http://localhost:8000
-```
-Opening `index.html` directly also works, except browser file-URL restrictions may affect the CSV/JSON download links.
+GitHub Pages rebuilds automatically; the live site reflects the new commit within roughly one minute. The `validate` workflow also runs on the push and will fail the build if derived files are stale.

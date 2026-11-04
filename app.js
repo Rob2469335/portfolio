@@ -1,574 +1,6 @@
-// Robert Locust - Verified AI & Technology Credentials Portfolio
-// Master dataset and client-side reactive search/filtering logic
-
-const credentialsData = [
-  {
-    "number": 1,
-    "id": "CT190TJLYPT7",
-    "title": "Generative AI Strategic Leader Specialization",
-    "institution": "Vanderbilt University",
-    "type": "Specialization",
-    "date": "February 3, 2026",
-    "category": "AI Strategy and Organizational Leadership",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/CT190TJLYPT7",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Generative AI Deep Research: Strategic AI Edge for Leaders", "id": "C1OY5VKS1F0D", "url": "https://coursera.org/verify/C1OY5VKS1F0D"},
-      {"title": "Prompt Engineering for ChatGPT", "id": "I5E6CQWH84N5", "url": "https://coursera.org/verify/I5E6CQWH84N5"},
-      {"title": "Generative AI Primer", "id": "MJ18SQN0FE2H", "url": "https://coursera.org/verify/MJ18SQN0FE2H"},
-      {"title": "Agentic AI and AI Agents: A Primer for Leaders", "id": "97SZ3BLWQE6M", "url": "https://coursera.org/verify/97SZ3BLWQE6M"}
-    ]
-  },
-  {
-    "number": 2,
-    "id": "DA024S7Y1GKH",
-    "title": "Google AI Essentials Specialization",
-    "institution": "Google",
-    "type": "Specialization",
-    "date": "February 10, 2026",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/DA024S7Y1GKH",
-    "share_url": "https://coursera.org/share/2ab55e432c7f467c2e6d88c6ba5ede25",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Introduction to AI", "id": "16X9SJ5DCVMI", "url": "https://coursera.org/verify/16X9SJ5DCVMI"},
-      {"title": "Maximize Productivity With AI Tools", "id": "VBZ89ZYHFTJY", "url": "https://coursera.org/verify/VBZ89ZYHFTJY"},
-      {"title": "Discover the Art of Prompting", "id": "UTCZBMA99EQH", "url": "https://coursera.org/verify/UTCZBMA99EQH"},
-      {"title": "Use AI Responsibly", "id": "V0EEKK8BU94M", "url": "https://coursera.org/verify/V0EEKK8BU94M"},
-      {"title": "Stay Ahead of the AI Curve", "id": "094LSH2E5ZRV", "url": "https://coursera.org/verify/094LSH2E5ZRV"}
-    ]
-  },
-  {
-    "number": 3,
-    "id": "NC3UJ0LDPVND",
-    "title": "Google IT Support Professional Certificate",
-    "institution": "Google",
-    "type": "Professional Certificate",
-    "date": "February 8, 2026",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/NC3UJ0LDPVND",
-    "share_url": "",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Technical Support Fundamentals", "id": "1DAZO0613LCX", "url": "https://coursera.org/verify/1DAZO0613LCX"},
-      {"title": "The Bits and Bytes of Computer Networking", "id": "MD4QIT2NZ0FW", "url": "https://coursera.org/verify/MD4QIT2NZ0FW"},
-      {"title": "Operating Systems and You: Becoming a Power User", "id": "AC72DQE4VRZ3", "url": "https://coursera.org/verify/AC72DQE4VRZ3"},
-      {"title": "System Administration and IT Infrastructure Services", "id": "9TAUPELDAV34", "url": "https://coursera.org/verify/9TAUPELDAV34"},
-      {"title": "IT Security: Defense against the digital dark arts", "id": "4QRBEXO29EQE", "url": "https://coursera.org/verify/4QRBEXO29EQE"},
-      {"title": "Accelerate Your Job Search with AI", "id": "7SNN99T1UB4L", "url": "https://coursera.org/verify/7SNN99T1UB4L"}
-    ]
-  },
-  {
-    "number": 4,
-    "id": "46TOQXSQP79M",
-    "title": "Organizational Strategy with Generative AI & AI Agents Specialization",
-    "institution": "Vanderbilt University",
-    "type": "Specialization",
-    "date": "January 2026",
-    "category": "AI Strategy and Organizational Leadership",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/46TOQXSQP79M",
-    "share_url": "",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Generative AI & AI Agent Organizational Strategy for Leaders", "id": "U0NWVTL5GEBO", "url": "https://coursera.org/verify/U0NWVTL5GEBO"},
-      {"title": "Agentic AI and AI Agents: A Primer for Leaders", "id": "97SZ3BLWQE6M", "url": "https://coursera.org/verify/97SZ3BLWQE6M"},
-      {"title": "Prompt Engineering for ChatGPT", "id": "I5E6CQWH84N5", "url": "https://coursera.org/verify/I5E6CQWH84N5"},
-      {"title": "OpenAI GPTs: Creating Your Own Custom AI Assistants", "id": "7I2797IVCKD0", "url": "https://coursera.org/verify/7I2797IVCKD0"}
-    ]
-  },
-  {
-    "number": 5,
-    "id": "VC6X0HJ0ZKVP",
-    "title": "Google Prompting Essentials Specialization",
-    "institution": "Google",
-    "type": "Specialization",
-    "date": "January 2026",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/VC6X0HJ0ZKVP",
-    "share_url": "",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Start Writing Prompts like a Pro", "id": "H18LC18NHGSU", "url": "https://coursera.org/verify/H18LC18NHGSU"},
-      {"title": "Design Prompts for Everyday Work Tasks", "id": "P81DQ55BZPIE", "url": "https://coursera.org/verify/P81DQ55BZPIE"},
-      {"title": "Speed Up Data Analysis and Presentation Building", "id": "H1Y7HBZEGZAB", "url": "https://coursera.org/verify/H1Y7HBZEGZAB"},
-      {"title": "Use AI as a Creative or Expert Partner", "id": "O4HVO1E1NS2D", "url": "https://coursera.org/verify/O4HVO1E1NS2D"}
-    ]
-  },
-  {
-    "number": 6,
-    "id": "Y54CWPZ5JJ4Q",
-    "title": "Generative AI for Educators & Teachers Specialization",
-    "institution": "Vanderbilt University",
-    "type": "Specialization",
-    "date": "January 2026",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/specialization/certificate/Y54CWPZ5JJ4Q",
-    "share_url": "",
-    "status": "ACCOUNT-SCOPED",
-    "component_courses": [
-      {"title": "Generative AI Primer", "id": "MJ18SQN0FE2H", "url": "https://coursera.org/verify/MJ18SQN0FE2H"},
-      {"title": "Innovative Teaching with ChatGPT", "id": "VEYQVWMDW9US", "url": "https://coursera.org/verify/VEYQVWMDW9US"},
-      {"title": "GPT Vision: Seeing the World through Generative AI", "id": "W0OYGOV55T46", "url": "https://coursera.org/verify/W0OYGOV55T46"},
-      {"title": "Trustworthy Generative AI", "id": "BQ90OEBLRNM0", "url": "https://coursera.org/verify/BQ90OEBLRNM0"}
-    ]
-  },
-  {
-    "number": 7,
-    "id": "OUQE6VJ2V2CJ",
-    "title": "Vibe Coding Fundamentals",
-    "institution": "University of Colorado System",
-    "type": "Course",
-    "date": "March 5, 2026",
-    "category": "AI Automation and Productivity",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/OUQE6VJ2V2CJ",
-    "share_url": "https://coursera.org/share/5e8b71d5dae3e5b3123ef736bc25cbda",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 8,
-    "id": "JX20B2YS8BZ3",
-    "title": "Introduction to Networking",
-    "institution": "NVIDIA",
-    "type": "Course",
-    "date": "February 5, 2026",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/JX20B2YS8BZ3",
-    "share_url": "https://coursera.org/share/f0d069ef3d3c808530615cbdfb9786da",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 9,
-    "id": "B2X2YFSXDROO",
-    "title": "Introduction to Data Analytics",
-    "institution": "Meta",
-    "type": "Course",
-    "date": "February 2, 2026",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/B2X2YFSXDROO",
-    "share_url": "https://coursera.org/share/a4c63a5bacaf385cfed8364be002008e",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 10,
-    "id": "NEB39550YVSI",
-    "title": "Prepare Data for Exploration",
-    "institution": "Google",
-    "type": "Course",
-    "date": "January 19, 2026",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/NEB39550YVSI",
-    "share_url": "https://coursera.org/share/4bd070e3efdd23d4f3ab3a21af68bb38",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 11,
-    "id": "E8GYK27VYCO7",
-    "title": "ChatGPT Advanced Data Analysis",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 13, 2026",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/E8GYK27VYCO7",
-    "share_url": "https://coursera.org/share/dbad64714a16cc58c7dfab372418613d",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 12,
-    "id": "NEJQC0AI63GK",
-    "title": "Ask Questions to Make Data-Driven Decisions",
-    "institution": "Google",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/NEJQC0AI63GK",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 13,
-    "id": "HPIJ9TXEWSJ2",
-    "title": "Foundations: Data, Data, Everywhere",
-    "institution": "Google",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/HPIJ9TXEWSJ2",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 14,
-    "id": "GTXC25N732MW",
-    "title": "Prompt Engineering for Generative AI: Build Better AI Prompts",
-    "institution": "IBM",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/GTXC25N732MW",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 15,
-    "id": "M08UCKJRSXLF",
-    "title": "Claude Code: Software Engineering with Generative AI Agents",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "AI Agents and Agentic Systems",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/M08UCKJRSXLF",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 16,
-    "id": "HU3GGYB0TGGM",
-    "title": "Introduction to Information Technology and AWS Cloud",
-    "institution": "Amazon Web Services",
-    "type": "Course",
-    "date": "November 2025",
-    "category": "Cloud Computing and Infrastructure",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/HU3GGYB0TGGM",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 17,
-    "id": "8QH3UK49X0UM",
-    "title": "Generative AI Essentials: From Fundamentals to Real-World Applications",
-    "institution": "IBM",
-    "type": "Course",
-    "date": "November 2025",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/8QH3UK49X0UM",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 18,
-    "id": "QFAOKQFWKO7B",
-    "title": "AI Foundations: How Artificial Intelligence Works",
-    "institution": "IBM",
-    "type": "Course",
-    "date": "September 2025",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/QFAOKQFWKO7B",
-    "share_url": "",
-    "status": "VERIFIED"
-  },
-  {
-    "number": 19,
-    "id": "C1OY5VKS1F0D",
-    "title": "Generative AI Deep Research: Strategic AI Edge for Leaders",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "AI Strategy and Organizational Leadership",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/C1OY5VKS1F0D",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI Strategic Leader Specialization"
-  },
-  {
-    "number": 20,
-    "id": "I5E6CQWH84N5",
-    "title": "Prompt Engineering for ChatGPT",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "November 2025",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/I5E6CQWH84N5",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI Strategic Leader Specialization"
-  },
-  {
-    "number": 21,
-    "id": "MJ18SQN0FE2H",
-    "title": "Generative AI Primer",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/MJ18SQN0FE2H",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI Strategic Leader Specialization"
-  },
-  {
-    "number": 22,
-    "id": "97SZ3BLWQE6M",
-    "title": "Agentic AI and AI Agents: A Primer for Leaders",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "AI Agents and Agentic Systems",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/97SZ3BLWQE6M",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI Strategic Leader Specialization"
-  },
-  {
-    "number": 23,
-    "id": "16X9SJ5DCVMI",
-    "title": "Introduction to AI",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/16X9SJ5DCVMI",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google AI Essentials Specialization"
-  },
-  {
-    "number": 24,
-    "id": "VBZ89ZYHFTJY",
-    "title": "Maximize Productivity With AI Tools",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "AI Automation and Productivity",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/VBZ89ZYHFTJY",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google AI Essentials Specialization"
-  },
-  {
-    "number": 25,
-    "id": "UTCZBMA99EQH",
-    "title": "Discover the Art of Prompting",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/UTCZBMA99EQH",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google AI Essentials Specialization"
-  },
-  {
-    "number": 26,
-    "id": "V0EEKK8BU94M",
-    "title": "Use AI Responsibly",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "Responsible AI and Related Topics",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/V0EEKK8BU94M",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google AI Essentials Specialization"
-  },
-  {
-    "number": 27,
-    "id": "094LSH2E5ZRV",
-    "title": "Stay Ahead of the AI Curve",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/094LSH2E5ZRV",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google AI Essentials Specialization"
-  },
-  {
-    "number": 28,
-    "id": "1DAZO0613LCX",
-    "title": "Technical Support Fundamentals",
-    "institution": "Google",
-    "type": "Course",
-    "date": "September 2025",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/1DAZO0613LCX",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 29,
-    "id": "MD4QIT2NZ0FW",
-    "title": "The Bits and Bytes of Computer Networking",
-    "institution": "Google",
-    "type": "Course",
-    "date": "October 2025",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/MD4QIT2NZ0FW",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 30,
-    "id": "AC72DQE4VRZ3",
-    "title": "Operating Systems and You: Becoming a Power User",
-    "institution": "Google",
-    "type": "Course",
-    "date": "October 2025",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/AC72DQE4VRZ3",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 31,
-    "id": "9TAUPELDAV34",
-    "title": "System Administration and IT Infrastructure Services",
-    "institution": "Google",
-    "type": "Course",
-    "date": "February 2026",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/9TAUPELDAV34",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 32,
-    "id": "4QRBEXO29EQE",
-    "title": "IT Security: Defense against the digital dark arts",
-    "institution": "Google",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Information Technology and Technical Support",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/4QRBEXO29EQE",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 33,
-    "id": "7SNN99T1UB4L",
-    "title": "Accelerate Your Job Search with AI",
-    "institution": "Google",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "AI Automation and Productivity",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/7SNN99T1UB4L",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google IT Support Professional Certificate"
-  },
-  {
-    "number": 34,
-    "id": "U0NWVTL5GEBO",
-    "title": "Generative AI & AI Agent Organizational Strategy for Leaders",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "AI Strategy and Organizational Leadership",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/U0NWVTL5GEBO",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Organizational Strategy with Generative AI & AI Agents Specialization"
-  },
-  {
-    "number": 35,
-    "id": "7I2797IVCKD0",
-    "title": "OpenAI GPTs: Creating Your Own Custom AI Assistants",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "AI Agents and Agentic Systems",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/7I2797IVCKD0",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Organizational Strategy with Generative AI & AI Agents Specialization"
-  },
-  {
-    "number": 36,
-    "id": "H18LC18NHGSU",
-    "title": "Start Writing Prompts like a Pro",
-    "institution": "Google",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/H18LC18NHGSU",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google Prompting Essentials Specialization"
-  },
-  {
-    "number": 37,
-    "id": "P81DQ55BZPIE",
-    "title": "Design Prompts for Everyday Work Tasks",
-    "institution": "Google",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/P81DQ55BZPIE",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google Prompting Essentials Specialization"
-  },
-  {
-    "number": 38,
-    "id": "H1Y7HBZEGZAB",
-    "title": "Speed Up Data Analysis and Presentation Building",
-    "institution": "Google",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Data Analytics and Business Intelligence",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/H1Y7HBZEGZAB",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google Prompting Essentials Specialization"
-  },
-  {
-    "number": 39,
-    "id": "O4HVO1E1NS2D",
-    "title": "Use AI as a Creative or Expert Partner",
-    "institution": "Google",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/O4HVO1E1NS2D",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Google Prompting Essentials Specialization"
-  },
-  {
-    "number": 40,
-    "id": "VEYQVWMDW9US",
-    "title": "Innovative Teaching with ChatGPT",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Prompt Engineering and AI Applications",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/VEYQVWMDW9US",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI for Educators & Teachers Specialization"
-  },
-  {
-    "number": 41,
-    "id": "W0OYGOV55T46",
-    "title": "GPT Vision: Seeing the World through Generative AI",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "December 2025",
-    "category": "Generative AI and Large Language Models",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/W0OYGOV55T46",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI for Educators & Teachers Specialization"
-  },
-  {
-    "number": 42,
-    "id": "BQ90OEBLRNM0",
-    "title": "Trustworthy Generative AI",
-    "institution": "Vanderbilt University",
-    "type": "Course",
-    "date": "January 2026",
-    "category": "Responsible AI and Related Topics",
-    "direct_url": "https://www.coursera.org/account/accomplishments/verify/BQ90OEBLRNM0",
-    "share_url": "",
-    "status": "VERIFIED",
-    "parent_specialization": "Generative AI for Educators & Teachers Specialization"
-  }
-];
+// Canonical credential dataset: credentials_master.json (single source of truth).
+// This file intentionally contains no credential data; it is fetched at runtime.
+let credentialsData = [];
 
 // DOM references
 const cardsContainer = document.getElementById('cardsContainer');
@@ -578,6 +10,47 @@ const categoryFilter = document.getElementById('categoryFilter');
 const typeFilter = document.getElementById('typeFilter');
 const resultsCount = document.getElementById('resultsCount');
 const resetBtn = document.getElementById('resetBtn');
+const verificationFilter = document.getElementById('verificationFilter');
+const summaryTotal = document.getElementById('summaryTotal');
+const summaryPublic = document.getElementById('summaryPublic');
+const summaryScoped = document.getElementById('summaryScoped');
+const summaryCourses = document.getElementById('summaryCourses');
+
+// Visual + accessible status badge. Text label always present (never colour alone).
+function statusBadge(c) {
+  const isPublic = c.status === 'VERIFIED';
+  const label = isPublic ? 'PUBLICLY VERIFIED' : 'ACCOUNT-SCOPED';
+  const desc = isPublic
+    ? 'Recipient and credential title are visible on the public Coursera verification page.'
+    : 'Coursera page requires an account sign-in to confirm the recipient and credential title.';
+  const icon = isPublic
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>'
+    : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>';
+  return `<span class="badge ${isPublic ? 'badge-verified' : 'badge-scoped'}" title="${escapeHtml(desc)}">` +
+    icon + label + `<span class="sr-only"> — ${escapeHtml(desc)}</span></span>`;
+}
+
+// Keep the filter labels' counts in sync with the dataset.
+function updateFilterLabels(items) {
+  const distinct = (fn) => new Set(items.map(fn)).size;
+  const setFirst = (el, text) => { if (el && el.options && el.options.length) el.options[0].textContent = text; };
+  setFirst(institutionFilter, 'All Institutions (' + distinct(c => c.institution) + ')');
+  setFirst(categoryFilter, 'All Domains (' + distinct(c => c.category) + ')');
+  setFirst(typeFilter, 'All Types (' + distinct(c => c.type) + ')');
+  setFirst(verificationFilter, 'All Statuses (' + items.length + ')');
+}
+
+// Summary counters derived from the canonical dataset (never hard-coded).
+function renderSummary(items) {
+  const total = items.length;
+  const pub = items.filter(c => c.status === 'VERIFIED').length;
+  const scoped = items.filter(c => c.status === 'ACCOUNT-SCOPED').length;
+  if (summaryTotal) summaryTotal.textContent = String(total);
+  if (summaryPublic) summaryPublic.textContent = String(pub);
+  if (summaryScoped) summaryScoped.textContent = String(scoped);
+  if (summaryCourses) summaryCourses.textContent = String(items.filter(c => c.type === 'Course').length);
+  updateFilterLabels(items);
+}
 
 function renderCards(items) {
   if (items.length === 0) {
@@ -608,10 +81,7 @@ function renderCards(items) {
         <div class="card-header">
           <div class="badges-row">
             <span class="badge badge-type badge-${escapeHtml(c.type.toLowerCase().replace(/\s+/g, '-'))}">${escapeHtml(c.type)}</span>
-            <span class="badge badge-verified">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              COURSERA ISSUED
-            </span>
+${statusBadge(c)}
             <span class="credential-seq">#${escapeHtml(String(c.number))}</span>
           </div>
           <h3 class="credential-title">${escapeHtml(c.title)}</h3>
@@ -640,6 +110,7 @@ function renderCards(items) {
             </button>
           </div>
 
+          ${c.status === 'ACCOUNT-SCOPED' ? `<p class="status-note">Coursera requires an account sign-in to confirm the recipient and title for this certificate.</p>` : ''}
           ${c.parent_specialization ? `
             <div class="parent-spec-notice">
               <span>Part of:</span> <strong>${escapeHtml(c.parent_specialization)}</strong>
@@ -689,6 +160,7 @@ function filterCredentials() {
   const selectedInst = institutionFilter.value;
   const selectedCat = categoryFilter.value;
   const selectedType = typeFilter.value;
+  const selectedVerification = verificationFilter ? verificationFilter.value : '';
 
   const filtered = credentialsData.filter(c => {
     // Search match
@@ -707,7 +179,12 @@ function filterCredentials() {
     // Type filter
     const typePass = !selectedType || c.type === selectedType;
 
-    return searchPass && instPass && catPass && typePass;
+    // Verification filter: 'public' | 'scoped' | '' (all)
+    const verificationPass = !selectedVerification ||
+      (selectedVerification === 'public' && c.status === 'VERIFIED') ||
+      (selectedVerification === 'scoped' && c.status === 'ACCOUNT-SCOPED');
+
+    return searchPass && instPass && catPass && typePass && verificationPass;
   });
 
   renderCards(filtered);
@@ -718,6 +195,7 @@ function resetFilters() {
   institutionFilter.value = '';
   categoryFilter.value = '';
   typeFilter.value = '';
+  if (verificationFilter) verificationFilter.value = '';
   renderCards(credentialsData);
 }
 
@@ -772,6 +250,7 @@ searchInput.addEventListener('input', filterCredentials);
 institutionFilter.addEventListener('change', filterCredentials);
 categoryFilter.addEventListener('change', filterCredentials);
 typeFilter.addEventListener('change', filterCredentials);
+if (verificationFilter) verificationFilter.addEventListener('change', filterCredentials);
 resetBtn.addEventListener('click', resetFilters);
 // Delegated handler for the per-card "Copy ID" button (no inline JS in markup).
 cardsContainer.addEventListener('click', function (event) {
@@ -790,7 +269,24 @@ document.querySelectorAll('.cat-quick-btn').forEach(btn => {
   });
 });
 
-// Initial Render
-document.addEventListener('DOMContentLoaded', () => {
-  renderCards(credentialsData);
+// Initial load: fetch the canonical dataset, then render.
+async function loadCredentials() {
+  const response = await fetch('credentials_master.json', { cache: 'no-cache' });
+  if (!response.ok) throw new Error('HTTP ' + response.status);
+  const data = await response.json();
+  if (!Array.isArray(data) || data.length === 0) throw new Error('dataset empty');
+  return data;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  cardsContainer.innerHTML = '<p class="loading-note">Loading credentials…</p>';
+  try {
+    credentialsData = await loadCredentials();
+    renderSummary(credentialsData);
+    renderCards(credentialsData);
+  } catch (err) {
+    cardsContainer.innerHTML = '<p class="error-note">Could not load credentials_master.json. ' +
+      'Serve this folder over HTTP (e.g. <code>python -m http.server 8000</code>) and reload.</p>';
+    if (window.console) console.error('Credential dataset load failed:', err);
+  }
 });

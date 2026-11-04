@@ -1,0 +1,17 @@
+{
+  "name": "robert-locust-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static credentials portfolio with data validation and real-browser tests",
+  "scripts": {
+    "validate": "python tools/portfolio_data.py",
+    "generate": "python tools/portfolio_data.py --write",
+    "serve": "python -m http.server 8080 --bind 127.0.0.1",
+    "test:browser": "playwright test",
+    "test:browser:desktop": "playwright test --project=desktop",
+    "test:browser:mobile": "playwright test --project=mobile"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  }
+}

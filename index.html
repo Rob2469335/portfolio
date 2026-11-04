@@ -13,6 +13,7 @@
   <meta property="og:description" content="42 Coursera-issued credentials from Google, Vanderbilt University, IBM, NVIDIA, Meta, and AWS. 36 have public verification pages; 6 specializations link to account-scoped certificate pages.">
 
   <!-- Stylesheet -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Segoe UI,Arial' font-size='16' font-weight='700' fill='white' text-anchor='middle'%3ERL%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -68,7 +69,7 @@
         <div class="stat-card">
           <div class="stat-icon stat-icon-blue">🎓</div>
           <div>
-            <div class="stat-number">42</div>
+            <div class="stat-number" id="summaryTotal">42</div>
             <div class="stat-label">Total Credentials</div>
           </div>
         </div>
@@ -76,26 +77,40 @@
         <div class="stat-card">
           <div class="stat-icon stat-icon-green">✓</div>
           <div>
-            <div class="stat-number">36</div>
-            <div class="stat-label">Public Verification Pages</div>
+            <div class="stat-number" id="summaryPublic">36</div>
+            <div class="stat-label">Publicly Verified</div>
           </div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-icon stat-icon-purple">🏆</div>
+          <div class="stat-icon stat-icon-amber">🔒</div>
           <div>
-            <div class="stat-number">6</div>
-            <div class="stat-label">Specializations / Certs</div>
+            <div class="stat-number" id="summaryScoped">6</div>
+            <div class="stat-label">Account-Scoped</div>
           </div>
         </div>
 
         <div class="stat-card">
-          <div class="stat-icon stat-icon-amber">📜</div>
+          <div class="stat-icon stat-icon-purple">📜</div>
           <div>
-            <div class="stat-number">36</div>
-            <div class="stat-label">Course Accreditations</div>
+            <div class="stat-number" id="summaryCourses">36</div>
+            <div class="stat-label">Course Credentials</div>
           </div>
         </div>
+      </div>
+
+      <div class="status-legend" role="note" aria-label="How to read the verification badges">
+        <p class="legend-intro">Two verification labels appear on the cards below:</p>
+        <ul class="legend-list">
+          <li>
+            <span class="legend-badge legend-badge-verified" aria-hidden="true">PUBLICLY VERIFIED</span>
+            <span class="legend-text"><strong>Publicly verified</strong> — the Coursera page shows the recipient name and credential title to anyone, without signing in.</span>
+          </li>
+          <li>
+            <span class="legend-badge legend-badge-scoped" aria-hidden="true">ACCOUNT-SCOPED</span>
+            <span class="legend-text"><strong>Account-scoped</strong> — the Coursera certificate page requires an account sign-in to display the recipient and title. The credential is issued and linked; the public page simply does not expose those details.</span>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -104,7 +119,7 @@
   <section class="categories-nav">
     <div class="container">
       <h2 class="section-heading">Core Competency Areas</h2>
-      <p class="section-subheading">Click any competency domain below to jump directly to matching verified credentials.</p>
+      <p class="section-subheading">Click any competency domain below to jump directly to matching credentials.</p>
       
       <div class="categories-pills-grid">
         <button class="cat-quick-btn" data-cat="AI Agents and Agentic Systems">AI Agents &amp; Agentic Systems</button>
@@ -168,6 +183,15 @@
             <option value="Specialization">Specialization</option>
             <option value="Professional Certificate">Professional Certificate</option>
             <option value="Course">Course</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="verificationFilter" class="control-label">Verification Status</label>
+          <select id="verificationFilter" class="control-select">
+            <option value="">All Statuses (42)</option>
+            <option value="public">Publicly verified</option>
+            <option value="scoped">Account-scoped</option>
           </select>
         </div>
 

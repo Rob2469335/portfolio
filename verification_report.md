@@ -126,6 +126,55 @@ A credential is marked **VERIFIED (public)** only when criteria 1–4 all hold. 
 
 ---
 
+## 5b. Public-route investigation for the six account-scoped credentials
+
+Each account-scoped record was tested against every plausible public URL shape **without signing in**. No public route exists for any of the six.
+
+| Credential | `/specialization/certificate/<ID>` | `/specialization/<ID>` | `verify/specialization/<ID>` | Recorded share URL | Result |
+|---|---|---|---|---|---|
+| `CT190TJLYPT7` Generative AI Strategic Leader | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | none recorded | **ACCOUNT-SCOPED** |
+| `DA024S7Y1GKH` Google AI Essentials | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | 200 → redirects, no recipient | **ACCOUNT-SCOPED** |
+| `NC3UJ0LDPVND` Google IT Support Professional Certificate | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | none recorded | **ACCOUNT-SCOPED** |
+| `46TOQXSQP79M` Organizational Strategy with Generative AI & AI Agents | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | none recorded | **ACCOUNT-SCOPED** |
+| `VC6X0HJ0ZKVP` Google Prompting Essentials | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | none recorded | **ACCOUNT-SCOPED** |
+| `Y54CWPZ5JJ4Q` Generative AI for Educators & Teachers | 200, no recipient | 200, no recipient | 200 → redirects, no recipient | none recorded | **ACCOUNT-SCOPED** |
+
+**Interpretation:** every variant returns HTTP 200 but redirects to the same account-scoped page, which never renders "Completed by Robert locust" or the credential title to a logged-out visitor. Status therefore remains **ACCOUNT-SCOPED**; no public verification claim is made for these six.
+
+---
+
+## 5c. Status labels on the site
+
+| Label | Meaning | Presentation |
+|---|---|---|
+| **PUBLICLY VERIFIED** (36) | The Coursera page shows the recipient name and credential title to anyone, without signing in | Green badge, check icon, text label |
+| **ACCOUNT-SCOPED** (6) | The Coursera certificate page requires an account sign-in to display recipient and title. The credential is issued and linked; the public page simply does not expose those details | Amber badge, information icon, text label, plus an explanatory line inside the card |
+
+- Colour is never the only signal: both badges carry a **text label**, a `title` tooltip, and screen-reader-only explanatory text (`.sr-only`).
+- A **legend** near the top of the page explains both labels in plain language.
+- A **Verification Status** filter lets visitors show only publicly verified or only account-scoped credentials.
+- The three summary counters (42 / 36 / 6) and the filter labels are **computed from the dataset at load time**, so they cannot drift from the data.
+
+---
+
+## 5d. Testing performed
+
+**Browser tests — executed and passing:** Playwright 1.64.1 driving the locally installed Google Chrome, against the real page served over HTTP.
+
+| Suite | Viewport | Result |
+|---|---|---|
+| Desktop (`desktop.spec.js`) | 1280 × 900 | **12 / 12 passed** |
+| Security (`security.spec.js`) | desktop | **4 / 4 passed** |
+| Mobile (`mobile.spec.js`) | Pixel 7 profile | **6 / 6 passed** |
+
+Covered: page load and dataset fetch, 42 cards, summary totals, badge counts and accessibility text, search, institution/category/type/verification filters, empty state, reset, accordions, copy-to-clipboard, link targets and `rel`, zero uncaught errors and zero console errors; mobile overflow, readability, touch-target sizes, accordion taps, and clipped-text checks; hostile injection through a stubbed dataset (title, id, institution, category and URL) and through the search box.
+
+**Data validation — executed and passing:** `python tools/portfolio_data.py` (structure, uniqueness, statuses, URLs, baseline, category totals, component deduplication, CSV parity, no embedded dataset in `app.js`).
+
+**Not performed:** Firefox/Safari/Edge, iOS Safari, screen-reader testing (NVDA/JAWS/VoiceOver), automated colour-contrast auditing, and real network-throttling tests. These remain unverified rather than passing.
+
+---
+
 ## 6. Audit Conclusion
 
 All 42 records resolve to a live Coursera certificate URL. **36** of them render the recipient and credential title on a public page and are recorded as **VERIFIED (public)**. The **6** specialization / professional-certificate URLs are **account-scoped**: they answer HTTP 200 but do not expose the recipient without a Coursera sign-in, so they are recorded as **ACCOUNT-SCOPED** rather than verified.
